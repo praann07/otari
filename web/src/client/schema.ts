@@ -4165,7 +4165,7 @@ export interface paths {
          * @description Let the organization's admins, or the deployment's operator, read what one of your sessions was about.
          *
          *     A session's content is private to its own user. A share lets its audience read
-         *     it until it expires or you end it, and each read through it is recorded for you.
+         *     it until you end it or lose the workspace, and each read through it is recorded for you.
          *     Only the session's own user can share it.
          */
         post: operations["organization-traces-share_trace_content"];
@@ -9442,12 +9442,6 @@ export interface components {
              * @enum {string}
              */
             audience: "organization_admins" | "deployment_operator";
-            /**
-             * Days
-             * @description How long the share lasts.
-             * @default 30
-             */
-            days: number;
             /** Note */
             note?: string | null;
         };
@@ -9484,11 +9478,6 @@ export interface components {
              */
             created_at: string;
             /**
-             * Expires At
-             * Format: date-time
-             */
-            expires_at: string;
-            /**
              * Id
              * Format: uuid
              */
@@ -9509,7 +9498,10 @@ export interface components {
              * @description Its newest reads, newest first; GET .../shares/{share_id}/reads pages through all of them. A reader's reads are recorded at most once an hour. Only its owner sees them.
              */
             reads?: components["schemas"]["ContentReadPublic"][];
-            /** Revoked At */
+            /**
+             * Revoked At
+             * @description When it ended: its owner ended it, or lost the workspace.
+             */
             revoked_at: string | null;
         };
         /**
